@@ -13,6 +13,7 @@ package game.ui.map {
 		public var btn6X6:Button = null;
 		public var txtNativePath:Label = null;
 		public var txtName:Label = null;
+		public var btnTab:Tab = null;
 		protected static var uiView:XML =
 			<View width="1000" height="780">
 			  <Image skin="png.comp.blank" x="0" y="66" width="276" height="346"/>
@@ -32,15 +33,16 @@ package game.ui.map {
 			  </List>
 			  <Box x="280" y="66" width="720" height="685" var="container"/>
 			  <Button label="辅助" skin="png.comp.button" x="186" y="6" width="55" height="55" var="btnFuzhu" labelBold="true"/>
-			  <Button label="SAVE" skin="png.comp.button" x="126" y="6" width="55" height="55" var="btnSave" labelBold="true"/>
-			  <Button label="OPEN" skin="png.comp.button" x="6" y="6" width="55" height="55" var="btnOpen" toolTip="打开map存储目录" labelBold="true"/>
-			  <Button label="NEW" skin="png.comp.button" x="66" y="6" width="55" height="55" var="btnNew" toolTip="新建地图文件" labelBold="true"/>
+			  <Button label="保存" skin="png.comp.button" x="126" y="6" width="55" height="55" var="btnSave" labelBold="true"/>
+			  <Button label="目录" skin="png.comp.button" x="6" y="6" width="55" height="55" var="btnOpen" toolTip="打开map存储目录" labelBold="true"/>
+			  <Button label="新建" skin="png.comp.button" x="66" y="6" width="55" height="55" var="btnNew" toolTip="新建地图文件" labelBold="true"/>
 			  <Button label="8X8" skin="png.comp.button" x="246" y="6" width="55" height="55" var="btn8X8" toolTip="打开map存储目录" labelBold="true"/>
 			  <Button label="6X6" skin="png.comp.button" x="306" y="6" width="55" height="55" var="btn6X6" toolTip="打开map存储目录" labelBold="true"/>
 			  <Label text="操作目录：" x="6" y="756" bold="true"/>
 			  <Label x="75" y="756" bold="true" width="377" height="18" var="txtNativePath"/>
 			  <Label text="操作文件：" x="458" y="756" bold="true"/>
 			  <Label x="527" y="756" bold="true" width="141" height="18" var="txtName"/>
+			  <Tab labels="地基,地表,角色,怪物" skin="png.comp.tab" x="0" y="412" labelBold="true" var="btnTab"/>
 			</View>;
 		public function MapPageUI(){}
 		override protected function createChildren():void {

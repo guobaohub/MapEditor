@@ -1,6 +1,7 @@
-package game.view.map
+package game.view.map.model
 {
 	import game.common.GameInstance;
+	import game.view.map.MapPage;
 
 	public class MapPageModel
 	{		
@@ -13,6 +14,12 @@ package game.view.map
 			}
 			return _panel;
 		}
+		
+		public var baseList:Array;
+		public var surfaceList:Array;
+		public var decorateList:Array;
+		public var playerList:Array;
+		public var monsterList:Array;
 		
 		private var _width:uint = 1000;
 		public function get width():uint
@@ -93,6 +100,7 @@ package game.view.map
 			_gridList = value;
 			
 			panel.gridList.array = _gridList;
+			panel.gridList.selectedIndex = 0;
 		}
 
 		private var _mapList:Array;
@@ -121,8 +129,20 @@ package game.view.map
 			_mapListSelectedItem = value;
 			
 			panel.mapList.selectedItem = _mapListSelectedItem;
+		}	
+		
+		private var _mapGridModel:MapGridModel;
+
+		public function get mapGridModel():MapGridModel
+		{
+			return _mapGridModel;
 		}
 
-		
-	}
+		public function set mapGridModel(value:MapGridModel):void
+		{
+			_mapGridModel = value;			
+			_mapGridModel.mapGrid.setMapGridRes(_mapGridModel.mapGridRes);
+		}
+	}		
 }
+

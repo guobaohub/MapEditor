@@ -18,8 +18,9 @@ package game.moudle.mappage.view
 	import game.view.map.MapGrid;
 	import game.view.map.MapGridRes;
 	import game.view.map.MapPage;
-	import game.view.map.MapPageModel;
 	import game.view.map.NewMapPage;
+	import game.view.map.model.MapGridModel;
+	import game.view.map.model.MapPageModel;
 	
 	import morn.core.components.List;
 	
@@ -107,6 +108,7 @@ package game.moudle.mappage.view
 				panel.btnSave.addEventListener(MouseEvent.CLICK, onSaveHandler);
 				panel.btn8X8.addEventListener(MouseEvent.CLICK, onSortHandler);
 				panel.btn6X6.addEventListener(MouseEvent.CLICK, onSortHandler);
+				panel.btnTab.addEventListener(Event.CHANGE, onTabHandler);
 			});
 			UIEventsRegisterManager.addUIRemovedEvent(MapPage,function():void{
 				panel.removeEventListener(Event.ADDED_TO_STAGE, handler);
@@ -116,18 +118,42 @@ package game.moudle.mappage.view
 				panel.mapList.removeEventListener(Event.CHANGE, onChangeHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_UP, onHandler);
+				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_OUT, onHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onHandler);				
 				panel.btnOpen.removeEventListener(MouseEvent.CLICK, onOpenHandler);
 				panel.btnNew.removeEventListener(MouseEvent.CLICK, onNewHandler);
 				panel.btnSave.removeEventListener(MouseEvent.CLICK, onSaveHandler);
 				panel.btn8X8.removeEventListener(MouseEvent.CLICK, onSortHandler);
 				panel.btn6X6.removeEventListener(MouseEvent.CLICK, onSortHandler);
+				panel.btnTab.removeEventListener(Event.CHANGE, onTabHandler);
 			});
 		}
 		
 		private function handler(e:Event):void
 		{	
 			
+		}
+		
+		private function onTabHandler(e:Event):void
+		{
+			switch(panel.btnTab.selectedIndex)
+			{
+				case 0:
+					mapPageModel.gridList = mapPageModel.baseList;
+					break;
+				case 1:
+					mapPageModel.gridList = mapPageModel.surfaceList;
+					break;
+//				case 2:
+//					mapPageModel.gridList = mapPageModel.decorateList;
+//					break;
+				case 2:
+					mapPageModel.gridList = mapPageModel.playerList;
+					break;
+				case 3:
+					mapPageModel.gridList = mapPageModel.monsterList;
+					break;
+			}
 		}
 		
 		private var curData:Object;
@@ -149,8 +175,38 @@ package game.moudle.mappage.view
 			switch(e.type)
 			{
 				case MouseEvent.MOUSE_DOWN:
+					if(target)
+					{
+						var mapGridRes:MapGridRes = target.mapGridRes;						
+						switch(panel.btnTab.selectedIndex)
+						{
+							case 0:
+								mapGridRes.base = panel.gridList.selectedIndex;
+								break;
+							case 1:
+								mapGridRes.surface = panel.gridList.selectedIndex;
+								break;
+			//				case 2:
+			//					mapGridRes.decorate = panel.gridList.selectedIndex;
+			//					break;
+							case 2:
+								mapGridRes.player = panel.gridList.selectedIndex;
+								break;
+							case 3:
+								mapGridRes.monster = panel.gridList.selectedIndex;
+								break;
+						}
+						
+						var mapGridModel:MapGridModel = new MapGridModel();
+						mapGridModel.mapGrid = target;
+						mapGridModel.mapGridRes = mapGridRes;
+						
+						mapPageModel.mapGridModel = mapGridModel;
+					}
 					break;
 				case MouseEvent.MOUSE_UP:
+					break;
+				case MouseEvent.MOUSE_OUT:
 					break;
 				case MouseEvent.MOUSE_MOVE:
 					if(e.target as MapGrid)
@@ -170,6 +226,14 @@ package game.moudle.mappage.view
 							}
 						}
 					}
+					else
+					{
+						if(target)
+						{
+							target.filters = [];
+							target = null;
+						}
+					}
 					break;					
 			}
 		}
@@ -181,12 +245,42 @@ package game.moudle.mappage.view
 			var vect:Vector.<Object>;		
 			
 			dataList = new Array();
+			for(i = 0; i < 6; i ++)
+			{
+				dataList.push({image : "png.grid.base." + i});//{image : "png.grid.base." + (i + 1), index : (i + 1)}
+			}
+			mapPageModel.baseList = dataList;
+			
+			dataList = new Array();
+			for(i = 0; i < 3; i ++)
+			{
+				dataList.push({image : "png.grid.surface." + i});
+			}
+			mapPageModel.surfaceList = dataList;
+			
+			dataList = new Array();
+			for(i = 0; i < 0; i ++)
+			{
+				dataList.push({image : "png.grid.decorate." + i});
+			}
+			mapPageModel.decorateList = dataList;
+			
+			dataList = new Array();
 			for(i = 0; i < 2; i ++)
 			{
-				dataList.push({image : "png.grid.base." + (i + 1), index : (i + 1)});
+				dataList.push({image : "png.grid.player." + i});
 			}
+			mapPageModel.playerList = dataList;
 			
-			mapPageModel.gridList = dataList;
+			dataList = new Array();
+			for(i = 0; i < 4; i ++)
+			{
+				dataList.push({image : "png.grid.monster." + i});
+			}
+			mapPageModel.monsterList = dataList;
+			
+			panel.btnTab.selectedIndex = 0;
+			mapPageModel.gridList = mapPageModel.baseList;
 		}
 		
 		/**
@@ -272,7 +366,9 @@ package game.moudle.mappage.view
 					'"y":' + r.y +  "," + 
 					'"base":' + r.base + "," + 
 					'"surface":' + r.surface +  "," + 
-					'"decorate":' + r.decorate 
+					'"decorate":' + r.decorate +  "," + 
+					'"player":' + r.player +  "," + 
+					'"monster":' + r.monster
 					+ '}';
 			}			
 			data += "]";

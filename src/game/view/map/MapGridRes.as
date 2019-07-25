@@ -8,5 +8,7 @@ package game.view.map
 		public var base:int = 1;
 		public var surface:int = 0;
 		public var decorate:int = 0;
+		public var player:int = 0;
+		public var monster:int = 0;
 	}
 }
