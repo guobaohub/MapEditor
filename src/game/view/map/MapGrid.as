@@ -31,11 +31,11 @@ package game.view.map
 			this.addChild(decorate);
 			
 			player = new Image();
-//			player.scale = 0.6;
+			player.scale = 0.6;
 			this.addChild(player);
 			
 			monster = new Image();
-//			monster.scale = 0.6;
+			monster.scale = 0.6;
 			this.addChild(monster);
 			
 			mapGridRes = _mapGridRes;
@@ -57,10 +57,11 @@ package game.view.map
 			decorate.y = 60 - 100;
 			
 			player.skin = _mapGridRes.player ? "png.grid.player." + _mapGridRes.player : "";
-			player.x = 10; player.y = 90 - 100;
+			player.x = 10; player.y = 30 * 0.6 - player.height;
 			
 			monster.skin = _mapGridRes.monster ? "png.grid.monster." + _mapGridRes.monster : "";
-			monster.y = 30 - 100;
+			monster.x = (100 - monster.width) >> 1;
+			monster.y = 50 - monster.height;
 		}
 		
 		private function init():void			

@@ -177,7 +177,8 @@ package game.moudle.mappage.view
 				case MouseEvent.MOUSE_DOWN:
 					if(target)
 					{
-						var mapGridRes:MapGridRes = target.mapGridRes;						
+						var mapGridRes:MapGridRes = target.mapGridRes;		
+						if(panel.btnTab.selectedIndex == 0 && panel.gridList.selectedIndex == 0) return;
 						switch(panel.btnTab.selectedIndex)
 						{
 							case 0:
@@ -195,8 +196,7 @@ package game.moudle.mappage.view
 							case 3:
 								mapGridRes.monster = panel.gridList.selectedIndex;
 								break;
-						}
-						
+						}						
 						var mapGridModel:MapGridModel = new MapGridModel();
 						mapGridModel.mapGrid = target;
 						mapGridModel.mapGridRes = mapGridRes;
