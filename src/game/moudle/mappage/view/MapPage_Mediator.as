@@ -464,7 +464,7 @@ package game.moudle.mappage.view
 		/**
 		 * 层级排序
 		 */		
-		private function sortMapContainer():void
+		private function sortMapContainer():void 
 		{
 			var children:Array = [];   
 			var n:uint =0;
