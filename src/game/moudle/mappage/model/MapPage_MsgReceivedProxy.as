@@ -9,7 +9,7 @@ package game.moudle.mappage.model
 	
 	public class MapPage_MsgReceivedProxy extends Proxy
 	{
-		public static const NAME:String = "ZhaoCaiFu_MsgReceivedProxy";
+		public static const NAME:String = "MapPage_MsgReceivedProxy";
 		
 		
 		public function MapPage_MsgReceivedProxy(proxyName:String=null, data:Object=null)

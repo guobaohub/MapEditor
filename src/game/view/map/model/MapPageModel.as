@@ -54,6 +54,7 @@ package game.view.map.model
 		{
 			_nativePath = value;
 			
+			MapPageSharedObject.instance.data.nativePath = _nativePath;
 			panel.txtNativePath.text = _nativePath;
 		}
 

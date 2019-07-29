@@ -1,11 +1,14 @@
 package game.moudle.mappage.view	
 {
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
+	import flash.ui.KeyboardType;
 	import flash.utils.ByteArray;
 	
 	import game.common.GameInstance;
@@ -21,6 +24,7 @@ package game.moudle.mappage.view
 	import game.view.map.NewMapPage;
 	import game.view.map.model.MapGridModel;
 	import game.view.map.model.MapPageModel;
+	import game.view.map.model.MapPageSharedObject;
 	
 	import morn.core.components.List;
 	
@@ -29,7 +33,7 @@ package game.moudle.mappage.view
 	
 	public class MapPage_Mediator extends Mediator
 	{
-		public static const NAME:String = 'ZhaoCaiFu_Mediator';
+		public static const NAME:String = 'MapPage_Mediator';
 		
 		public function MapPage_Mediator(mediatorName:String=null, viewComponent:Object=null)
 		{
@@ -80,6 +84,18 @@ package game.moudle.mappage.view
 					GameInstance.instance.main.addChild(panel);
 					loadRes();
 					panel.mapList.array = [];
+					
+					if(MapPageSharedObject.instance && MapPageSharedObject.instance.data.nativePath)
+					{
+						mapPageModel.nativePath = MapPageSharedObject.instance.data.nativePath;
+						var list:Array = FileManager.getAllFiles(new File(mapPageModel.nativePath), [".json"]);
+						var vec:Array = DataCreater.getgetFilesVector(list);
+						if(vec.length > 0)
+						{
+							mapPageModel.mapList = vec;
+							mapPageModel.mapListSelectedItem = vec[0];
+						}
+					}
 					break;
 			}
 		}
@@ -100,15 +116,16 @@ package game.moudle.mappage.view
 				panel.addEventListener(GameStage.BUTTON_CLICK, handler);
 				
 				panel.mapList.addEventListener(Event.CHANGE, onChangeHandler);
+				panel.btnTab.addEventListener(Event.CHANGE, onTabHandler);
 				GameInstance.instance.main.stage.addEventListener(MouseEvent.MOUSE_DOWN, onHandler);
 				GameInstance.instance.main.stage.addEventListener(MouseEvent.MOUSE_UP, onHandler);
-				GameInstance.instance.main.stage.addEventListener(MouseEvent.MOUSE_MOVE, onHandler);				
+				GameInstance.instance.main.stage.addEventListener(MouseEvent.MOUSE_MOVE, onHandler);	
+				GameInstance.instance.main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyHandler);
 				panel.btnOpen.addEventListener(MouseEvent.CLICK, onOpenHandler);
 				panel.btnNew.addEventListener(MouseEvent.CLICK, onNewHandler);
 				panel.btnSave.addEventListener(MouseEvent.CLICK, onSaveHandler);
 				panel.btn8X8.addEventListener(MouseEvent.CLICK, onSortHandler);
-				panel.btn6X6.addEventListener(MouseEvent.CLICK, onSortHandler);
-				panel.btnTab.addEventListener(Event.CHANGE, onTabHandler);
+				panel.btn6X6.addEventListener(MouseEvent.CLICK, onSortHandler);				
 			});
 			UIEventsRegisterManager.addUIRemovedEvent(MapPage,function():void{
 				panel.removeEventListener(Event.ADDED_TO_STAGE, handler);
@@ -116,22 +133,31 @@ package game.moudle.mappage.view
 				panel.removeEventListener(GameStage.BUTTON_CLICK, handler);
 				
 				panel.mapList.removeEventListener(Event.CHANGE, onChangeHandler);
+				panel.btnTab.removeEventListener(Event.CHANGE, onTabHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_UP, onHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_OUT, onHandler);
-				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onHandler);				
+				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onHandler);		
+				GameInstance.instance.main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyHandler);
 				panel.btnOpen.removeEventListener(MouseEvent.CLICK, onOpenHandler);
 				panel.btnNew.removeEventListener(MouseEvent.CLICK, onNewHandler);
 				panel.btnSave.removeEventListener(MouseEvent.CLICK, onSaveHandler);
 				panel.btn8X8.removeEventListener(MouseEvent.CLICK, onSortHandler);
-				panel.btn6X6.removeEventListener(MouseEvent.CLICK, onSortHandler);
-				panel.btnTab.removeEventListener(Event.CHANGE, onTabHandler);
+				panel.btn6X6.removeEventListener(MouseEvent.CLICK, onSortHandler);				
 			});
 		}
 		
 		private function handler(e:Event):void
 		{	
 			
+		}
+		
+		private function onKeyHandler(e:KeyboardEvent):void
+		{	
+			if(e.controlKey && e.keyCode == Keyboard.S)
+			{
+				onSaveHandler();
+			}
 		}
 		
 		private function onTabHandler(e:Event):void
@@ -234,7 +260,7 @@ package game.moudle.mappage.view
 							target = null;
 						}
 					}
-					break;					
+					break;	
 			}
 		}
 		
@@ -347,7 +373,7 @@ package game.moudle.mappage.view
 					
 				}				
 			});			
-		}		
+		}
 		
 		/**
 		 * 获取当前地图数据
@@ -375,7 +401,7 @@ package game.moudle.mappage.view
 			return data;
 		}
 		
-		private function onSaveHandler(e:MouseEvent):void
+		private function onSaveHandler(e:MouseEvent = null):void
 		{			
 			if(mapPageModel.nativePath && mapPageModel.name)
 			{

@@ -40,7 +40,7 @@ package game.common.utils
 				stream.readBytes(byte,0,stream.bytesAvailable);
 				stream.close();
 				vect.push({label : subfile.name, data : byte.readUTFBytes(byte.bytesAvailable) , nativePath : subfile.nativePath});
-				trace("路径：",subfile.nativePath,"文件名：",subfile.name);
+//				trace("路径：",subfile.nativePath,"文件名：",subfile.name);
 			}
 			return vect;
 		}
