@@ -18,8 +18,11 @@ package game.ui.map {
 		public var btnProperty:Button = null;
 		public var proContainer:Box = null;
 		public var monster:TextInput = null;
+		public var monsterRounds:TextInput = null;
+		public var surface:TextInput = null;
 		public var sceneContainer:Box = null;
 		public var bg:TextInput = null;
+		public var rounds:TextInput = null;
 		protected static var uiView:XML =
 			<View width="1200" height="780">
 			  <Image skin="png.comp.blank" x="0" y="66" width="276" height="346"/>
@@ -50,15 +53,21 @@ package game.ui.map {
 			  <Label x="527" y="756" bold="true" width="141" height="18" var="txtName"/>
 			  <Tab labels="地基,地表,角色,怪物" skin="png.comp.tab" x="0" y="412" labelBold="true" var="btnTab"/>
 			  <Image skin="png.comp.blank" x="1005" y="66" width="195" height="685"/>
-			  <Button label="场景" skin="png.comp.button" x="1005" y="6" width="55" height="55" toolTip="打开map存储目录" labelBold="true" var="btnScene"/>
+			  <Button label="场景" skin="png.comp.button" x="1005" y="6" width="55" height="55" toolTip="打开map存储目录" labelBold="true" var="btnScene" disabled="false"/>
 			  <Button label="属性" skin="png.comp.button" x="1065" y="6" width="55" height="55" var="btnProperty" toolTip="打开map存储目录" labelBold="true"/>
 			  <Box x="1005" y="66" width="195" var="proContainer" height="685">
-			    <Label text="怪物" x="0" y="1" color="0xffffff"/>
+			    <Label text="怪物" x="0" y="1" color="0xffffff" toolTip="怪物ID"/>
 			    <TextInput text="0" skin="png.comp.textinput" x="65" y="0" backgroundColor="0x666666" color="0xffffff" background="true" var="monster"/>
+			    <Label text="怪物刷新" x="0" y="25" color="0xffffff" toolTip="怪物刷新在第几回合"/>
+			    <TextInput text="0" skin="png.comp.textinput" x="65" y="24" backgroundColor="0x666666" color="0xffffff" background="true" var="monsterRounds"/>
+			    <Label text="地表" x="0" y="49" color="0xffffff" toolTip="地表ID"/>
+			    <TextInput text="0" skin="png.comp.textinput" x="65" y="48" backgroundColor="0x666666" color="0xffffff" background="true" var="surface"/>
 			  </Box>
 			  <Box x="1005" y="66" width="195" var="sceneContainer" height="685">
-			    <Label text="背景" x="0" y="1" color="0xffffff"/>
+			    <Label text="背景" x="0" y="1" color="0xffffff" toolTip="背景编号"/>
 			    <TextInput text="0" skin="png.comp.textinput" x="65" y="0" backgroundColor="0x666666" color="0xffffff" background="true" var="bg"/>
+			    <Label text="回合数" x="0" y="25" color="0xffffff" toolTip="当前关卡总回合数"/>
+			    <TextInput text="0" skin="png.comp.textinput" x="65" y="24" backgroundColor="0x666666" color="0xffffff" background="true" var="rounds"/>
 			  </Box>
 			</View>;
 		public function MapPageUI(){}
