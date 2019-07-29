@@ -95,7 +95,8 @@ package game.moudle.mappage.view
 							mapPageModel.mapList = vec;
 							mapPageModel.mapListSelectedItem = vec[0];
 						}
-					}
+						mapPageModel.sceneModel = true;
+					}					
 					break;
 			}
 		}
@@ -116,6 +117,7 @@ package game.moudle.mappage.view
 				panel.addEventListener(GameStage.BUTTON_CLICK, handler);
 				
 				panel.mapList.addEventListener(Event.CHANGE, onChangeHandler);
+				panel.gridList.addEventListener(Event.CHANGE, onChangeHandler1);
 				panel.btnTab.addEventListener(Event.CHANGE, onTabHandler);
 				GameInstance.instance.main.stage.addEventListener(MouseEvent.MOUSE_DOWN, onHandler);
 				GameInstance.instance.main.stage.addEventListener(MouseEvent.MOUSE_UP, onHandler);
@@ -125,7 +127,9 @@ package game.moudle.mappage.view
 				panel.btnNew.addEventListener(MouseEvent.CLICK, onNewHandler);
 				panel.btnSave.addEventListener(MouseEvent.CLICK, onSaveHandler);
 				panel.btn8X8.addEventListener(MouseEvent.CLICK, onSortHandler);
-				panel.btn6X6.addEventListener(MouseEvent.CLICK, onSortHandler);				
+				panel.btn6X6.addEventListener(MouseEvent.CLICK, onSortHandler);	
+				panel.btnScene.addEventListener(MouseEvent.CLICK, onSortHandler);	
+				panel.btnProperty.addEventListener(MouseEvent.CLICK, onSortHandler);	
 			});
 			UIEventsRegisterManager.addUIRemovedEvent(MapPage,function():void{
 				panel.removeEventListener(Event.ADDED_TO_STAGE, handler);
@@ -133,6 +137,7 @@ package game.moudle.mappage.view
 				panel.removeEventListener(GameStage.BUTTON_CLICK, handler);
 				
 				panel.mapList.removeEventListener(Event.CHANGE, onChangeHandler);
+				panel.gridList.removeEventListener(Event.CHANGE, onChangeHandler1);
 				panel.btnTab.removeEventListener(Event.CHANGE, onTabHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onHandler);
 				GameInstance.instance.main.stage.removeEventListener(MouseEvent.MOUSE_UP, onHandler);
@@ -143,7 +148,9 @@ package game.moudle.mappage.view
 				panel.btnNew.removeEventListener(MouseEvent.CLICK, onNewHandler);
 				panel.btnSave.removeEventListener(MouseEvent.CLICK, onSaveHandler);
 				panel.btn8X8.removeEventListener(MouseEvent.CLICK, onSortHandler);
-				panel.btn6X6.removeEventListener(MouseEvent.CLICK, onSortHandler);				
+				panel.btn6X6.removeEventListener(MouseEvent.CLICK, onSortHandler);	
+				panel.btnScene.removeEventListener(MouseEvent.CLICK, onSortHandler);	
+				panel.btnProperty.removeEventListener(MouseEvent.CLICK, onSortHandler);
 			});
 		}
 		
@@ -180,6 +187,12 @@ package game.moudle.mappage.view
 					mapPageModel.gridList = mapPageModel.monsterList;
 					break;
 			}
+			mapPageModel.sceneModel = true;
+		}
+		
+		private function onChangeHandler1(e:Event):void
+		{
+			mapPageModel.sceneModel = true;
 		}
 		
 		private var curData:Object;
@@ -190,9 +203,11 @@ package game.moudle.mappage.view
 			mapPageModel.name = data.label as String;
 			var byte:ByteArray = data.byte as ByteArray;
 			var st:String = data.data;
-			var arr:Array = st ? JSON.parse(st) as Array : [];
+			var config:Object = st ? JSON.parse(st) : new Object();
+			var arr:Array = config.map ? config.map as Array : [];
 			
-			mapPageModel.mapData = arr;			
+			mapPageModel.mapData = arr;	
+			mapPageModel.sceneModel = true;
 		}
 		
 		private var target:MapGrid;
@@ -204,30 +219,48 @@ package game.moudle.mappage.view
 					if(target)
 					{
 						var mapGridRes:MapGridRes = target.mapGridRes;		
-						if(panel.btnTab.selectedIndex == 0 && panel.gridList.selectedIndex == 0) return;
-						switch(panel.btnTab.selectedIndex)
-						{
-							case 0:
-								mapGridRes.base = panel.gridList.selectedIndex;
-								break;
-							case 1:
-								mapGridRes.surface = panel.gridList.selectedIndex;
-								break;
-			//				case 2:
-			//					mapGridRes.decorate = panel.gridList.selectedIndex;
-			//					break;
-							case 2:
-								mapGridRes.player = panel.gridList.selectedIndex;
-								break;
-							case 3:
-								mapGridRes.monster = panel.gridList.selectedIndex;
-								break;
-						}						
-						var mapGridModel:MapGridModel = new MapGridModel();
-						mapGridModel.mapGrid = target;
-						mapGridModel.mapGridRes = mapGridRes;
 						
-						mapPageModel.mapGridModel = mapGridModel;
+						if(mapPageModel.sceneModel)
+						{
+							if(panel.btnTab.selectedIndex == 0 && panel.gridList.selectedIndex == 0) return;
+							switch(panel.btnTab.selectedIndex)
+							{
+								case 0:
+									mapGridRes.base = panel.gridList.selectedIndex;
+									break;
+								case 1:
+									mapGridRes.surface = panel.gridList.selectedIndex;
+									break;
+//								case 2:
+//									mapGridRes.decorate = panel.gridList.selectedIndex;
+//									break;
+								case 2:
+									mapGridRes.player = panel.gridList.selectedIndex;
+									break;
+								case 3:
+									mapGridRes.monster = panel.gridList.selectedIndex;
+									break;
+							}
+							var mapGridModel:MapGridModel = new MapGridModel();
+							mapGridModel.mapGrid = target;
+							mapGridModel.mapGridRes = mapGridRes;
+							
+							mapPageModel.mapGridModel = mapGridModel;
+						}	
+						else
+						{
+							if(e.target as MapGrid)
+							{
+								setTargetFilter(e.stageX, e.stageY);
+							}
+						}
+					}
+					else
+					{
+						if(e.target as MapGrid)
+						{
+							setTargetFilter(e.stageX, e.stageY);
+						}
 					}
 					break;
 				case MouseEvent.MOUSE_UP:
@@ -235,32 +268,44 @@ package game.moudle.mappage.view
 				case MouseEvent.MOUSE_OUT:
 					break;
 				case MouseEvent.MOUSE_MOVE:
-					if(e.target as MapGrid)
+					if(mapPageModel.sceneModel)
 					{
-						for(var i:int = 0; i < panel.mapContainer.numChildren; i ++)
+						if(e.target as MapGrid)
 						{
-							var t:MapGrid =  panel.mapContainer.getChildAt(i) as MapGrid;
-							arrPoly = [[t.x + 0, t.y + 15], [t.x + 30, t.y + 0], [t.x + 30, t.y + 30], [t.x + 60, t.y + 15]];
-							if(pointInPoly(e.stageX  - panel.container.x - panel.mapContainer.x, e.stageY - panel.container.y - panel.mapContainer.y, arrPoly))
+							setTargetFilter(e.stageX, e.stageY);
+						}
+						else
+						{
+							if(target)
 							{
-								if(target)
-								{
-									target.filters = [];
-								}
-								target = t;
-								target.filters = [new GlowFilter(0xffffff, 1, 3, 3, 15, BitmapFilterQuality.LOW)];
+								target.filters = [];
+								target = null;
 							}
 						}
 					}
 					else
 					{
-						if(target)
-						{
-							target.filters = [];
-							target = null;
-						}
-					}
+						
+					}					
 					break;	
+			}
+		}
+		
+		private function setTargetFilter(stageX:Number, stageY:Number):void
+		{
+			for(var i:int = 0; i < panel.mapContainer.numChildren; i ++)
+			{
+				var t:MapGrid =  panel.mapContainer.getChildAt(i) as MapGrid;
+				arrPoly = [[t.x + 0, t.y + 15], [t.x + 30, t.y + 0], [t.x + 30, t.y + 30], [t.x + 60, t.y + 15]];
+				if(pointInPoly(stageX  - panel.container.x - panel.mapContainer.x, stageY - panel.container.y - panel.mapContainer.y, arrPoly))
+				{
+					if(target)
+					{
+						target.filters = [];
+					}
+					target = t;
+					target.filters = [new GlowFilter(0xffffff, 1, 3, 3, 15, BitmapFilterQuality.LOW)];
+				}
 			}
 		}
 		
@@ -278,7 +323,7 @@ package game.moudle.mappage.view
 			mapPageModel.baseList = dataList;
 			
 			dataList = new Array();
-			for(i = 0; i < 3; i ++)
+			for(i = 0; i < 2; i ++)
 			{
 				dataList.push({image : "png.grid.surface." + i});
 			}
@@ -299,7 +344,7 @@ package game.moudle.mappage.view
 			mapPageModel.playerList = dataList;
 			
 			dataList = new Array();
-			for(i = 0; i < 4; i ++)
+			for(i = 0; i < 2; i ++)
 			{
 				dataList.push({image : "png.grid.monster." + i});
 			}
@@ -380,7 +425,7 @@ package game.moudle.mappage.view
 		 */		
 		private function getMapData():String
 		{
-			var data:String = "[";
+			var data:String = '{"bg":' + mapPageModel.mapBG + ',"map":[';
 			var i:uint = 0;
 			var r:MapGridRes;
 			for(i = 0; i < panel.mapContainer.numChildren; i ++)
@@ -397,7 +442,7 @@ package game.moudle.mappage.view
 					'"monster":' + r.monster
 					+ '}';
 			}			
-			data += "]";
+			data += "]}";
 			return data;
 		}
 		
@@ -444,6 +489,17 @@ package game.moudle.mappage.view
 					break;				
 				case panel.btn8X8:
 					sortMapContainerAxB(8, 8);
+					break;
+				case panel.btnScene:
+					mapPageModel.sceneModel = true;
+					break;
+				case panel.btnProperty:
+					mapPageModel.sceneModel = false;
+					if(target)
+					{
+						target.filters = [];
+						target = null;
+					}					
 					break;
 			}			
 		}

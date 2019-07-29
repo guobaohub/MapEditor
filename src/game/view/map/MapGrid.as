@@ -51,15 +51,16 @@ package game.view.map
 			base.skin = _mapGridRes.base ? "png.grid.base." + _mapGridRes.base : "";	
 			
 			surface.skin = _mapGridRes.surface ? "png.grid.surface." + _mapGridRes.surface : "";
-			surface.y = 60 - 100;
+			surface.y = 60 - surface.height;
 			
 			decorate.skin = _mapGridRes.decorate ? "png.grid.decorate." + _mapGridRes.decorate : "";
 			decorate.y = 60 - 100;
 			
-			player.skin = _mapGridRes.player ? "png.grid.player." + _mapGridRes.player : "";
-			player.x = 10; player.y = 30 * 0.6 - player.height;
+			player.skin = _mapGridRes.player ? "png.grid.player." + 1 : "";
+			player.x = 10; 
+			player.y = 50 - player.height;
 			
-			monster.skin = _mapGridRes.monster ? "png.grid.monster." + _mapGridRes.monster : "";
+			monster.skin = _mapGridRes.monster ? "png.grid.monster." + 1 : "";
 			monster.x = (100 - monster.width) >> 1;
 			monster.y = 50 - monster.height;
 		}
