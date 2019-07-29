@@ -27,11 +27,13 @@ package game.view.map
 		{
 			super();			
 			
-			lineContainer = new LineContainer();
-			container.addChild(lineContainer);
+			
 			
 			mapContainer = new MapContainer();
 			container.addChild(mapContainer);
+			
+			lineContainer = new LineContainer();
+			container.addChild(lineContainer);
 		}			
 		
 	}

@@ -2,6 +2,8 @@ package game.view.map
 {
 	import flash.display.Sprite;
 	
+	import game.view.map.model.OtherConst;
+	
 	import morn.core.components.Image;
 	
 	public class MapGrid extends Sprite
@@ -18,7 +20,7 @@ package game.view.map
 			super();
 			
 			base = new Image();
-			base.skin = "png.grid.base.1";
+			base.skin = OtherConst.base + 1;
 			base.scale = 0.6;
 			this.addChild(base);
 			
@@ -48,18 +50,18 @@ package game.view.map
 			if(_mapGridRes.x && _mapGridRes.x >= 0) this.x = _mapGridRes.x;
 			if(_mapGridRes.y && _mapGridRes.y >= 0) this.y = _mapGridRes.y;		
 			
-			base.skin = _mapGridRes.base ? "png.grid.base." + _mapGridRes.base : "";	
+			base.skin = _mapGridRes.base ? OtherConst.base + _mapGridRes.base : "";	
 			
-			surface.skin = _mapGridRes.surface ? "png.grid.surface." + _mapGridRes.surface : "";
+			surface.skin = _mapGridRes.surface ? OtherConst.surface + 1 : "";
 			surface.y = 60 - 100;
 			
-			decorate.skin = _mapGridRes.decorate ? "png.grid.decorate." + _mapGridRes.decorate : "";
+			decorate.skin = _mapGridRes.decorate ? OtherConst.decorate + _mapGridRes.decorate : "";
 			decorate.y = 60 - 100;
 			
-			player.skin = _mapGridRes.player ? "png.grid.player." + _mapGridRes.player : "";
+			player.skin = _mapGridRes.player ? OtherConst.player + 1 : "";
 			player.x = 10; player.y = 30 * 0.6 - player.height;
 			
-			monster.skin = _mapGridRes.monster ? "png.grid.monster." + _mapGridRes.monster : "";
+			monster.skin = _mapGridRes.monster ? OtherConst.monster + 1 : "";
 			monster.x = (100 - monster.width) >> 1;
 			monster.y = 50 - monster.height;
 		}

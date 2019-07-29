@@ -25,6 +25,7 @@ package game.moudle.mappage.view
 	import game.view.map.model.MapGridModel;
 	import game.view.map.model.MapPageModel;
 	import game.view.map.model.MapPageSharedObject;
+	import game.view.map.model.OtherConst;
 	
 	import morn.core.components.List;
 	
@@ -273,35 +274,35 @@ package game.moudle.mappage.view
 			dataList = new Array();
 			for(i = 0; i < 6; i ++)
 			{
-				dataList.push({image : "png.grid.base." + i});//{image : "png.grid.base." + (i + 1), index : (i + 1)}
+				dataList.push({image : OtherConst.base + i});//{image : "png.grid.base." + (i + 1), index : (i + 1)}
 			}
 			mapPageModel.baseList = dataList;
 			
 			dataList = new Array();
-			for(i = 0; i < 3; i ++)
+			for(i = 0; i < 2; i ++)
 			{
-				dataList.push({image : "png.grid.surface." + i});
+				dataList.push({image : OtherConst.surface + i});
 			}
 			mapPageModel.surfaceList = dataList;
 			
 			dataList = new Array();
 			for(i = 0; i < 0; i ++)
 			{
-				dataList.push({image : "png.grid.decorate." + i});
+				dataList.push({image : OtherConst.decorate + i});
 			}
 			mapPageModel.decorateList = dataList;
 			
 			dataList = new Array();
 			for(i = 0; i < 2; i ++)
 			{
-				dataList.push({image : "png.grid.player." + i});
+				dataList.push({image : OtherConst.player + i});
 			}
 			mapPageModel.playerList = dataList;
 			
 			dataList = new Array();
-			for(i = 0; i < 4; i ++)
+			for(i = 0; i < 2; i ++)
 			{
-				dataList.push({image : "png.grid.monster." + i});
+				dataList.push({image : OtherConst.monster + i});
 			}
 			mapPageModel.monsterList = dataList;
 			
