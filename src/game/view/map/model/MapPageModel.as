@@ -144,6 +144,38 @@ package game.view.map.model
 			_mapGridModel = value;			
 			_mapGridModel.mapGrid.setMapGridRes(_mapGridModel.mapGridRes);
 		}
+		
+		private var _sceneModel:Boolean;
+
+		public function get sceneModel():Boolean
+		{
+			return _sceneModel;
+		}
+
+		public function set sceneModel(value:Boolean):void
+		{
+			_sceneModel = value;
+			
+			panel.btnScene.disabled = value;
+			panel.btnProperty.disabled = !panel.btnScene.disabled;
+			
+			panel.sceneContainer.visible = value;
+			panel.proContainer.visible = !panel.sceneContainer.visible;
+		}
+
+		
+		private var _mapBG:int;
+
+		public function get mapBG():int
+		{
+			return _mapBG;
+		}
+
+		public function set mapBG(value:int):void
+		{
+			_mapBG = value;
+		}
+
 	}		
 }
 

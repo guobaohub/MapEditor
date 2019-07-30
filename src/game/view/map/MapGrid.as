@@ -50,16 +50,20 @@ package game.view.map
 			if(_mapGridRes.x && _mapGridRes.x >= 0) this.x = _mapGridRes.x;
 			if(_mapGridRes.y && _mapGridRes.y >= 0) this.y = _mapGridRes.y;		
 			
-			base.skin = _mapGridRes.base ? OtherConst.base + _mapGridRes.base : "";	
-			
+			base.skin = _mapGridRes.base ? OtherConst.base + _mapGridRes.base : "";				
 			surface.skin = _mapGridRes.surface ? OtherConst.surface + 1 : "";
-			surface.y = 60 - 100;
+			surface.y = 60 - surface.height;
 			
 			decorate.skin = _mapGridRes.decorate ? OtherConst.decorate + _mapGridRes.decorate : "";
 			decorate.y = 60 - 100;
-			
 			player.skin = _mapGridRes.player ? OtherConst.player + 1 : "";
 			player.x = 10; player.y = 30 * 0.6 - player.height;
+			
+			
+			
+			player.skin = _mapGridRes.player ? "png.grid.player." + 1 : "";
+			player.x = 10; 
+			player.y = 50 - player.height;
 			
 			monster.skin = _mapGridRes.monster ? OtherConst.monster + 1 : "";
 			monster.x = (100 - monster.width) >> 1;
