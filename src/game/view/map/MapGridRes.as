@@ -10,5 +10,7 @@ package game.view.map
 		public var decorate:int = 0;
 		public var player:int = 0;
 		public var monster:int = 0;
+		
+		public var monsterRounds:int = 1;
 	}
 }

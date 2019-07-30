@@ -1,6 +1,7 @@
 package game.view.map.model
 {
 	import game.common.GameInstance;
+	import game.view.map.MapGridRes;
 	import game.view.map.MapPage;
 
 	public class MapPageModel
@@ -141,9 +142,40 @@ package game.view.map.model
 
 		public function set mapGridModel(value:MapGridModel):void
 		{
-			_mapGridModel = value;			
-			_mapGridModel.mapGrid.setMapGridRes(_mapGridModel.mapGridRes);
+			if(value)
+			{
+				_mapGridModel = value;			
+				_mapGridModel.mapGrid.setMapGridRes(_mapGridModel.mapGridRes);
+				
+				panel.monster.text = _mapGridModel.mapGridRes.monster.toString();
+				panel.monsterRounds.text = _mapGridModel.mapGridRes.monster ? _mapGridModel.mapGridRes.monsterRounds.toString() : "0";
+				panel.surface.text = _mapGridModel.mapGridRes.surface.toString();
+			}
+			else
+			{
+				_mapGridModel = value;
+				
+				panel.monster.text = "0";
+				panel.monsterRounds.text = "0";
+				panel.surface.text = "0";
+			}
+			
 		}
+		
+//		private var _mapGridProperty:MapGridRes;
+//
+//		public function get mapGridProperty():MapGridRes
+//		{
+//			return _mapGridProperty;
+//		}
+//
+//		public function set mapGridProperty(value:MapGridRes):void
+//		{
+//			_mapGridProperty = value;
+//			
+//			
+//		}
+
 		
 		private var _sceneModel:Boolean;
 
@@ -174,7 +206,24 @@ package game.view.map.model
 		public function set mapBG(value:int):void
 		{
 			_mapBG = value;
+			
+			panel.bg.text = _mapBG.toString();
 		}
+		
+		private var _gameRounds:int;
+
+		public function get gameRounds():int
+		{
+			return _gameRounds;
+		}
+
+		public function set gameRounds(value:int):void
+		{
+			_gameRounds = value;
+			
+			panel.rounds.text = _gameRounds.toString();
+		}
+
 
 	}		
 }
