@@ -20,7 +20,7 @@ package
 			else
 				addEventListener(Event.ADDED_TO_STAGE, init);
 		}
-		
+		 
 		private function init():void {
 			App.init(this);		
 			App.loader.loadAssets(["assets/comp.swf", "assets/grid.swf"], new Handler(loadComplete), new Handler(loadProgress));
